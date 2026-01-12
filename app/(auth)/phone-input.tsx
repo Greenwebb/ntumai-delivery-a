@@ -30,6 +30,8 @@ import { useColors } from '@/hooks/use-colors';
  * - Tab switcher for phone/email
  * - Input fields with real-time validation
  * - Send OTP button at bottom
+ * 
+ * Wrapped with ScreenContainer for proper SafeArea handling on all devices
  */
 export default function PhoneInputScreen() {
   const router = useRouter();
@@ -161,9 +163,9 @@ export default function PhoneInputScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1 bg-white">
+      <ScreenContainer className="bg-white">
         {/* Logo at Top */}
-        <View className="w-full flex justify-center items-center mt-12">
+        <View className="w-full flex justify-center items-center mt-8">
           <Logo size="sm" />
         </View>
 
@@ -188,123 +190,129 @@ export default function PhoneInputScreen() {
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={{ flexGrow: 1 }}
           >
-            <View className="flex-1 px-6">
+            <View className="flex-1">
               {/* Demo Quick Login */}
-              <DemoQuickLogin
-                onSelectUser={async (email, password, role) => {
-                  try {
-                    setIsLoading(true);
-                    
-                    // Use demo API to login directly
-                    const result = await demoApi.auth.login(email, password);
-                    
-                    // Map mock user to auth store user format
-                    const user = {
-                      id: result.user.id,
-                      email: result.user.email,
-                      phone: result.user.phone,
-                      name: result.user.name,
-                      role: result.user.role,
-                    };
-                    
-                    // Login user directly to the store
-                    // Note: We use getState() to avoid triggering re-renders during the async operation
-                    const authStore = useAuthStore.getState();
-                    await authStore.login(user, result.token);
-                    
-                    if (Platform.OS !== 'web') {
-                      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+              <View className="px-6">
+                <DemoQuickLogin
+                  onSelectUser={async (email, password, role) => {
+                    try {
+                      setIsLoading(true);
+                      
+                      // Use demo API to login directly
+                      const result = await demoApi.auth.login(email, password);
+                      
+                      // Map mock user to auth store user format
+                      const user = {
+                        id: result.user.id,
+                        email: result.user.email,
+                        phone: result.user.phone,
+                        name: result.user.name,
+                        role: result.user.role,
+                      };
+                      
+                      // Login user directly to the store
+                      // Note: We use getState() to avoid triggering re-renders during the async operation
+                      const authStore = useAuthStore.getState();
+                      await authStore.login(user, result.token);
+                      
+                      if (Platform.OS !== 'web') {
+                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                      }
+                      toast.success(`Logged in as ${role}!`);
+                      
+                      // Use longer delay to ensure all state updates are complete
+                      // and React has finished all pending renders before navigation
+                      await new Promise(resolve => setTimeout(resolve, 300));
+                      
+                      // Navigate based on role - use push instead of replace to avoid navigation conflicts
+                      setIsLoading(false);
+                      if (role === 'customer') {
+                        router.push('/(customer)/(tabs)');
+                      } else if (role === 'tasker') {
+                        router.push('/(tasker)/(tabs)');
+                      } else if (role === 'vendor') {
+                        router.push('/(vendor)/(tabs)');
+                      }
+                    } catch (error: any) {
+                      console.error('Demo login error:', error);
+                      if (Platform.OS !== 'web') {
+                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+                      }
+                      toast.error(error?.message || 'Demo login failed');
+                      setIsLoading(false);
                     }
-                    toast.success(`Logged in as ${role}!`);
-                    
-                    // Use longer delay to ensure all state updates are complete
-                    // and React has finished all pending renders before navigation
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    
-                    // Navigate based on role - use push instead of replace to avoid navigation conflicts
-                    setIsLoading(false);
-                    if (role === 'customer') {
-                      router.push('/(customer)/(tabs)');
-                    } else if (role === 'tasker') {
-                      router.push('/(tasker)/(tabs)');
-                    } else if (role === 'vendor') {
-                      router.push('/(vendor)/(tabs)');
-                    }
-                  } catch (error: any) {
-                    console.error('Demo login error:', error);
-                    if (Platform.OS !== 'web') {
-                      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-                    }
-                    toast.error(error?.message || 'Demo login failed');
-                    setIsLoading(false);
-                  }
-                }}
-              />
+                  }}
+                />
+              </View>
               
               {/* Tab Switcher */}
-              <AuthMethodTabs
-                selectedMethod={selectedMethod}
-                onMethodChange={handleMethodChange}
-              />
+              <View className="px-6 mt-6">
+                <AuthMethodTabs
+                  selectedMethod={selectedMethod}
+                  onMethodChange={handleMethodChange}
+                />
+              </View>
 
               {/* Email/Phone Input */}
-              {selectedMethod === 'email' ? (
-                <View>
-                  <Input
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    placeholder="Enter your email"
-                    autoCapitalize="none"
-                    returnKeyType="done"
-                    onSubmitEditing={handleSendOtp}
-                    className="mb-4"
-                  />
-                  {/* Display field-specific errors for email */}
-                  {!emailValidation.isValid && email.length > 0 && (
-                    <View className="mb-4">
-                      {emailValidation.errors.map((error, index) => (
-                        <Text key={index} className="text-error text-sm mb-1">
-                          {error}
-                        </Text>
-                      ))}
-                    </View>
-                  )}
-                </View>
-              ) : (
-                <View>
-                  <PhoneInput
-                    phone={phoneNumber}
-                    countryCode={countryCode}
-                    onPhoneChange={setPhoneNumber}
-                    onCountryChange={setCountryCode}
-                    placeholder="Enter your mobile no."
-                    onSubmitEditing={handleSendOtp}
-                    className="mb-4"
-                  />
-                  {/* Display field-specific errors for phone */}
-                  {!phoneValidation.isValid && phoneNumber.length > 0 && (
-                    <View className="mb-4">
-                      {phoneValidation.errors.map((error, index) => (
-                        <Text key={index} className="text-error text-sm mb-1">
-                          {error}
-                        </Text>
-                      ))}
-                    </View>
-                  )}
-                </View>
-              )}
+              <View className="px-6 mt-6">
+                {selectedMethod === 'email' ? (
+                  <View>
+                    <Input
+                      value={email}
+                      onChangeText={setEmail}
+                      keyboardType="email-address"
+                      placeholder="Enter your email"
+                      autoCapitalize="none"
+                      returnKeyType="done"
+                      onSubmitEditing={handleSendOtp}
+                      className="mb-4"
+                    />
+                    {/* Display field-specific errors for email */}
+                    {!emailValidation.isValid && email.length > 0 && (
+                      <View className="mb-4">
+                        {emailValidation.errors.map((error, index) => (
+                          <Text key={index} className="text-error text-sm mb-1">
+                            {error}
+                          </Text>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                ) : (
+                  <View>
+                    <PhoneInput
+                      phone={phoneNumber}
+                      countryCode={countryCode}
+                      onPhoneChange={setPhoneNumber}
+                      onCountryChange={setCountryCode}
+                      placeholder="Enter your mobile no."
+                      onSubmitEditing={handleSendOtp}
+                      className="mb-4"
+                    />
+                    {/* Display field-specific errors for phone */}
+                    {!phoneValidation.isValid && phoneNumber.length > 0 && (
+                      <View className="mb-4">
+                        {phoneValidation.errors.map((error, index) => (
+                          <Text key={index} className="text-error text-sm mb-1">
+                            {error}
+                          </Text>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                )}
 
-              {/* Disclaimer */}
-              <Text className="text-gray-500 text-sm text-center mt-4">
-                By continuing, you agree to our Terms of Service and Privacy Policy
-              </Text>
+                {/* Disclaimer */}
+                <Text className="text-gray-500 text-sm text-center mt-4">
+                  By continuing, you agree to our Terms of Service and Privacy Policy
+                </Text>
+              </View>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
 
         {/* Send OTP Button */}
-        <View className="px-6 pb-8">
+        <View className="px-6 pb-4">
           <Button
             title={isLoading ? 'Sending OTP...' : 'Send OTP'}
             onPress={handleSendOtp}
@@ -315,10 +323,9 @@ export default function PhoneInputScreen() {
             className={isFormValid && !isLoading ? '' : 'opacity-50'}
           />
         </View>
-      </View>
+      </ScreenContainer>
     </TouchableWithoutFeedback>
   );
 }
 
 export { RouteErrorBoundary as ErrorBoundary } from "@/components/route-error-boundary";
-

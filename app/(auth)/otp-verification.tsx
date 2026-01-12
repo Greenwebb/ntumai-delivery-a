@@ -4,7 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Pressable, Platform, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { ScreenContainer } from '@/components/screen-container';
 import { Text } from '@/components/ui/text';
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/lib/toast-provider';
 import { authApi } from '@/lib/api/auth';
 import { isDemoMode, DEMO_CONFIG } from '@/lib/config/demo-mode';
@@ -272,9 +274,9 @@ export default function OTPVerificationScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1 bg-white">
+      <ScreenContainer className="bg-white">
         {/* Large Header */}
-        <View className="pt-20 pb-8 px-6">
+        <View className="pt-8 pb-8 px-6">
           <Text className="text-primary text-5xl font-bold mb-2">
             Get Started!
           </Text>
@@ -289,12 +291,13 @@ export default function OTPVerificationScreen() {
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
         >
           <ScrollView
-            className="flex-1 px-6"
+            className="flex-1"
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
             {/* Instructions */}
+            <View className="px-6">
             <Text className="text-gray-700 text-base mb-8 leading-6">
               Enter the code we sent to{'\n'}
               <Text className="font-semibold text-black">
@@ -302,16 +305,17 @@ export default function OTPVerificationScreen() {
               </Text>
               .
             </Text>
+            </View>
 
             {/* Countdown Timer */}
-            <View className="flex justify-start mb-8">
+            <View className="flex justify-start mb-8 px-6">
               <Text className="text-primary text-2xl font-medium">
                 {formatCountdown(countdown)}
               </Text>
             </View>
 
             {/* OTP Input Boxes (4 digits) */}
-            <View className="flex-row justify-between mb-20">
+            <View className="flex-row justify-between mb-20 px-6">
               {otp.map((digit, index) => (
                 <TextInput
                   key={index}
@@ -336,7 +340,7 @@ export default function OTPVerificationScreen() {
             </View>
 
             {/* Resend OTP and Change Method Links */}
-            <View className="items-center mb-12">
+            <View className="items-center mb-12 px-6">
               <Pressable onPress={handleResendOtp} disabled={isResendDisabled}>
                 <View className="flex-row gap-2">
                   <Text className="text-base font-medium text-gray-400">
@@ -359,22 +363,20 @@ export default function OTPVerificationScreen() {
             </View>
 
             {/* Verify Button */}
-            <View className="flex-1 justify-end pb-12">
-              <Pressable
-                className={`w-full py-5 rounded-2xl shadow-sm ${
-                  isOtpComplete && !isLoading ? 'bg-primary' : 'bg-gray-300'
-                }`}
+            <View className="flex-1 justify-end pb-4 px-6">
+              <Button
+                title={isLoading ? 'Verifying...' : 'Verify OTP'}
                 onPress={handleVerify}
                 disabled={!isOtpComplete || isLoading}
-              >
-                <Text className="text-white text-lg font-semibold text-center">
-                  {isLoading ? 'Verifying...' : 'Verify OTP'}
-                </Text>
-              </Pressable>
+                loading={isLoading}
+                variant="primary"
+                size="lg"
+                fullWidth
+              />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-      </View>
+      </ScreenContainer>
     </TouchableWithoutFeedback>
   );
 }

@@ -20,6 +20,13 @@ interface LogoProps {
    */
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   /**
+   * Color variant for the logo
+   * - 'auto': Automatically switch based on theme (default)
+   * - 'light': Always show light/white version
+   * - 'dark': Always show dark version
+   */
+  variant?: 'auto' | 'light' | 'dark';
+  /**
    * Additional className for custom styling
    */
   className?: string;
@@ -47,14 +54,22 @@ const sizeClasses = {
  * ```
  */
 export function Logo({ 
-  size = 'md', 
+  size = 'md',
+  variant = 'auto',
   className,
   resizeMode = 'contain',
 }: LogoProps) {
   const colorScheme = useColorScheme();
   
-  // Choose logo based on theme
-  const logoSource = colorScheme === 'dark' ? logoLight : logoDark;
+  // Choose logo based on variant or theme
+  let logoSource = logoDark;
+  if (variant === 'auto') {
+    logoSource = colorScheme === 'dark' ? logoLight : logoDark;
+  } else if (variant === 'light') {
+    logoSource = logoLight;
+  } else if (variant === 'dark') {
+    logoSource = logoDark;
+  }
 
   return (
     <Image 

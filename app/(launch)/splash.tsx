@@ -69,7 +69,7 @@ export default function SplashScreen() {
       >
         {/* Centered Logo with fade-in animation */}
         <Animated.View style={animatedLogoStyle} className="items-center">
-          <Logo size="xl" />
+          <Logo size="xl" variant="light" />
         </Animated.View>
 
         {/* Bottom Loader with spacing */}
