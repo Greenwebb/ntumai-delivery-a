@@ -333,3 +333,57 @@
 - [ ] Implement loading states (initial load, refreshing, pagination, infinite scroll, search)
 - [ ] Create skeleton loaders for all screens
 - [ ] Add proper loading indicators and spinners
+
+
+## Implementation Roadmap - Next Steps (Jan 12, 2025 - 6:05 AM)
+
+**Status**: Roadmap created - Ready to implement Phase 2
+
+### IMMEDIATE NEXT STEPS (Today - 4-5 hours)
+
+#### 1. Complete Auth Flow Testing (30 min)
+- [ ] Test splash → onboarding → role selection flow
+- [ ] Test phone input → OTP → role confirmation flow
+- [ ] Verify all auth screens display correctly on web and mobile
+- [ ] Fix any navigation issues
+
+#### 2. Create State Management Stores (3-4 hours) - CRITICAL
+- [ ] Create `stores/auth-store.ts` with AsyncStorage persistence
+- [ ] Create `stores/cart-store.ts` with validation logic
+- [ ] Create `stores/orders-store.ts` with state transitions
+- [ ] Create `stores/ui-store.ts` for global UI state
+- [ ] Test all stores in isolation
+- [ ] Integrate stores with existing screens
+
+#### 3. Build Customer Dashboard Skeleton (1 hour)
+- [ ] Create customer dashboard layout with bottom tabs (Home | Marketplace | Profile)
+- [ ] Add skeleton loaders for home screen
+- [ ] Implement empty state UI
+- [ ] Test dashboard loads correctly
+
+#### 4. Commit & Save Checkpoint (15 min)
+- [ ] Commit all changes to GitHub
+- [ ] Save checkpoint with stores implemented
+- [ ] Update todo.md with progress
+
+### PHASE 2: Customer Browse & Order Flow (30-35 hours total)
+
+#### Week 1 Priority:
+- [ ] State management stores (3-4 hours) ← START HERE
+- [ ] Customer dashboard/home screen (4-5 hours)
+- [ ] Empty states component library (2-3 hours)
+- [ ] Marketplace/vendor list screen (3-4 hours)
+- [ ] Vendor detail & menu screen (5-6 hours)
+
+#### Week 2 Priority:
+- [ ] Shopping cart screen (4-5 hours)
+- [ ] Checkout screen (6-7 hours)
+- [ ] Order tracking screen (6-8 hours)
+- [ ] Order history screen (3-4 hours)
+
+### Key Deliverables:
+- [ ] Customer can browse vendors
+- [ ] Customer can add items to cart
+- [ ] Customer can place an order
+- [ ] Customer can track order status
+- [ ] All screens handle empty, loading, error, and offline states
