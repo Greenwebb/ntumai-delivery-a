@@ -194,3 +194,15 @@
 - [ ] Re-enable tasker screens after customer works
 - [ ] Re-enable vendor screens after tasker works
 - [ ] All complex screens temporarily disabled (renamed to _disabled_*)
+
+
+## Current Focus (Jan 12, 2025 - 4:40 AM)
+
+- [x] Restore auth folder from _backup_screens
+- [x] Check all auth screen files for missing imports
+- [x] Create stub components for any missing dependencies
+- [ ] Test each auth screen loads without errors
+- [ ] Verify auth flow navigation works (phone → OTP → role selection)
+- [x] Splash screen loads successfully with logo and loading indicator
+- [ ] Test onboarding screen navigation from splash
+- [ ] Test role-selection screen

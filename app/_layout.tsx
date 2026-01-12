@@ -168,7 +168,7 @@ export default function RootLayout() {
               {/* Launch flow screens */}
               <Stack.Screen name="(launch)" />
               {/* Auth screens */}
-              {/* <Stack.Screen name="(auth)" /> */}
+              <Stack.Screen name="(auth)" />
               {/* Customer screens */}
               {/* <Stack.Screen name="(customer)" /> */}
               {/* Tasker screens */}
