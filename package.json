@@ -8,6 +8,7 @@
     "dev:web": "expo start --web",
     "dev:android": "expo start --android",
     "dev:ios": "expo start --ios",
+    "build": "echo 'Expo app - no build step needed'",
     "check": "tsc --noEmit",
     "lint": "expo lint",
     "format": "prettier --write .",
