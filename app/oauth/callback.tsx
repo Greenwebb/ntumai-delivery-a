@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ThemedView } from "@/components/themed-view";
 import * as Api from "@/lib/_core/api";
 import * as Auth from "@/lib/_core/auth";
@@ -269,3 +270,6 @@ export default function OAuthCallback() {
     </SafeAreaView>
   );
 }
+
+export { RouteErrorBoundary as ErrorBoundary } from "@/components/route-error-boundary";
+

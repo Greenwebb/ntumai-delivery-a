@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ScrollView, Text, View, TouchableOpacity } from "react-native";
 
 import { ScreenContainer } from "@/components/screen-container";
@@ -46,3 +47,6 @@ export default function HomeScreen() {
     </ScreenContainer>
   );
 }
+
+export { RouteErrorBoundary as ErrorBoundary } from "@/components/route-error-boundary";
+

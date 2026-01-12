@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Tabs } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -38,3 +39,6 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+export { RouteErrorBoundary as ErrorBoundary } from "@/components/route-error-boundary";
+

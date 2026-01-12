@@ -1,14 +1,15 @@
 // Load environment variables with proper priority (system > .env)
-import "./scripts/load-env.js";
 import type { ExpoConfig } from "expo/config";
 
-// Bundle ID format: space.manus.<project_name_dots>.<timestamp>
-// e.g., "my-app" created at 2024-01-15 10:30:45 -> "space.manus.my.app.t20240115103045"
-const bundleId = "space.manus.ntumai.delivery.t20260112040402";
-// Extract timestamp from bundle ID and prefix with "manus" for deep link scheme
-// e.g., "space.manus.my.app.t20240115103045" -> "manus20240115103045"
-const timestamp = bundleId.split(".").pop()?.replace(/^t/, "") ?? "";
-const schemeFromBundleId = `manus${timestamp}`;
+// Google Maps API Key (also exported in config/api-keys.ts for app components)
+const GOOGLE_MAPS_API_KEY = 'AIzaSyDw59gPssVHEg1TcHoC9at1KDF98yVnQe4';
+
+// Bundle ID format: space.ntumai.<project_name_dots>.<timestamp>
+// e.g., "my-app" created at 2024-01-15 10:30:45 -> "space.ntumai.my.app.t20240115103045"
+const bundleId = "com.ntumai.app";
+// Extract timestamp from bundle ID and prefix with "ntumai" for deep link scheme
+// e.g., "space.ntumai.my.app.t20240115103045" -> "ntumai20240115103045"
+const schemeFromBundleId = "ntumaidelivery";
 
 const env = {
   // App branding - update these values directly (do not use env vars)
@@ -34,6 +35,9 @@ const config: ExpoConfig = {
   ios: {
     supportsTablet: true,
     bundleIdentifier: env.iosBundleId,
+    config: {
+      googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    },
   },
   android: {
     adaptiveIcon: {
@@ -46,6 +50,12 @@ const config: ExpoConfig = {
     predictiveBackGestureEnabled: false,
     package: env.androidPackage,
     permissions: ["POST_NOTIFICATIONS"],
+    googleServicesFile: "./google-services.json",
+    config: {
+      googleMaps: {
+        apiKey: GOOGLE_MAPS_API_KEY,
+      },
+    },
     intentFilters: [
       {
         action: "VIEW",
@@ -67,6 +77,7 @@ const config: ExpoConfig = {
   },
   plugins: [
     "expo-router",
+    "expo-asset",
     [
       "expo-audio",
       {
@@ -100,7 +111,27 @@ const config: ExpoConfig = {
         },
       },
     ],
+    [
+      "@react-native-firebase/app",
+      {
+        android: {
+          googleServicesFile: "./google-services.json",
+        },
+      },
+    ],
+    [
+      "expo-maps",
+      {
+        googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+      },
+    ],
   ],
+  extra: {
+    eas: {
+      projectId: "63c57218-b1fb-476d-b9ad-1944cb86b51d",
+    },
+  },
+  owner: "georgemunganga",
   experiments: {
     typedRoutes: true,
     reactCompiler: true,
