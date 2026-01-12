@@ -10,6 +10,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 import { Platform, View, AppState } from "react-native";
+import * as ScreenOrientation from "expo-screen-orientation";
 import "@/lib/_core/nativewind-pressable";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { ToastProvider } from "@/lib/toast-provider";
@@ -102,6 +103,13 @@ export default function RootLayout() {
   // Initialize Manus runtime for cookie injection from parent container
   useEffect(() => {
     initManusRuntime();
+  }, []);
+
+  // Lock app to portrait orientation globally
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    }
   }, []);
 
   // Initialize offline store

@@ -8,6 +8,7 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
+import { ScreenContainer } from '@/components/screen-container';
 import { Logo } from '@/components/ui/logo';
 import { useColors } from '@/hooks/use-colors';
 
@@ -60,7 +61,7 @@ export default function SplashScreen() {
   }));
 
   return (
-    <View className="flex-1" style={{ backgroundColor: colors.primary }}>
+    <ScreenContainer className="bg-primary">
       {/* Transparent gradient/pattern overlay */}
       <ImageBackground
         source={require('@/assets/images/splash-background.png')}
@@ -77,7 +78,7 @@ export default function SplashScreen() {
           <ActivityIndicator size="large" color="#ffffff" />
         </View>
       </ImageBackground>
-    </View>
+    </ScreenContainer>
   );
 }
 

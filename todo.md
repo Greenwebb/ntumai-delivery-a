@@ -221,3 +221,16 @@
 - [x] Updated otp-verification.tsx with ScreenContainer wrapper and Button component
 - [x] Verified role-confirmation.tsx already uses ScreenContainer
 - [x] Updated Logo component to support variant prop (light/dark/auto)
+
+
+## Current Task (Jan 12, 2025 - 5:20 AM)
+
+- [x] Lock app to portrait mode globally (added to root layout with expo-screen-orientation)
+- [x] Wrap all launch screens with ScreenContainer (onboarding, role-selection, splash)
+- [x] Wrap all auth screens with ScreenContainer (phone-input, otp-verification, role-confirmation)
+- [x] Wrap all 150 backup screens with ScreenContainer (customer, tasker, vendor, guest, shared)
+- [x] Created wrap-screens.js automation script
+- [x] Fixed JSX errors and removed backup screens directory
+- [x] Verified app loads cleanly with splash screen
+- [x] All screens now have proper SafeArea handling
+- [ ] Commit all changes to GitHub

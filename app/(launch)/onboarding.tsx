@@ -3,6 +3,7 @@ import { View, Image, FlatList, Dimensions, ImageBackground } from 'react-native
 import { useState, useRef } from 'react';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenContainer } from '@/components/screen-container';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -46,7 +47,6 @@ export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const setGuestMode = useAuthStore((state) => state.setGuestMode);
-  const insets = useSafeAreaInsets();
 
   const handleGetStarted = () => {
     setGuestMode(true);
@@ -91,7 +91,7 @@ export default function OnboardingScreen() {
   );
 
   return (
-    <View className="flex-1 bg-white">
+    <ScreenContainer className="bg-white">
       {/* Top Section - Carousel */}
       <View className="flex-1 bg-white">
         <FlatList
@@ -107,11 +107,12 @@ export default function OnboardingScreen() {
           snapToInterval={SCREEN_WIDTH}
           decelerationRate="fast"
           bounces={false}
+          scrollEventThrottle={16}
           contentContainerStyle={{ flexGrow: 1 }}
         />
 
         {/* Pagination Dots */}
-        <View className="flex-row justify-center items-center gap-2 mb-6">
+        <View className="flex-row justify-center items-center gap-2 mb-4 px-6">
           {onboardingSlides.map((_, index) => (
             <View
               key={index}
@@ -125,7 +126,7 @@ export default function OnboardingScreen() {
       </View>
 
       {/* Bottom Section - Action Buttons with Gradient Overlay */}
-      <View className="relative bg-primary" style={{ height: 200 }}>
+      <View className="relative bg-primary" style={{ minHeight: 180 }}>
         {/* Background Pattern Overlay */}
         <ImageBackground
           source={require('@/assets/images/splash-background.png')}
@@ -149,7 +150,7 @@ export default function OnboardingScreen() {
         />
 
         {/* Buttons */}
-        <View className="flex-1 gap-3 px-6 justify-end z-10" style={{ paddingBottom: Math.max(insets.bottom, 24) }}>
+        <View className="flex-1 gap-3 px-6 justify-end z-10 pb-6">
           {/* Get Started Button - White with Primary Text */}
           <Button
             title="Get started"
@@ -169,7 +170,7 @@ export default function OnboardingScreen() {
           />
         </View>
       </View>
-    </View>
+    </ScreenContainer>
   );
 }
 

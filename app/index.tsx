@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { Redirect } from 'expo-router';
+import { ScreenContainer } from '@/components/screen-container';
 
 /**
  * Root index - Entry point that redirects to splash screen
