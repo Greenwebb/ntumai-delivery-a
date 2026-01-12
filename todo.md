@@ -180,3 +180,17 @@
 - [ ] API integration documentation
 - [ ] Development workflow guide
 - [ ] Deployment instructions
+
+
+## Current Critical Issues (Added Jan 12, 2025)
+
+- [ ] Fix missing @/screens directory - many tab files reference screens that don't exist
+- [ ] Create stub components for all missing screen imports
+- [ ] Fix react-native-maps web compatibility (stub created, needs testing)
+- [ ] Verify splash screen assets exist (splash-background.png, Logo component)
+- [ ] Test launch flow works (splash → onboarding → role-selection)
+- [ ] Re-enable auth screens after launch flow works
+- [ ] Re-enable customer screens after auth works
+- [ ] Re-enable tasker screens after customer works
+- [ ] Re-enable vendor screens after tasker works
+- [ ] All complex screens temporarily disabled (renamed to _disabled_*)

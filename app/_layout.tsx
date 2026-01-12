@@ -6,7 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { notificationEvents } from "@/lib/services/notification-events";
+// import { notificationEvents } from "@/lib/services/notification-events";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 import { Platform, View, AppState } from "react-native";
@@ -15,8 +15,8 @@ import { ThemeProvider } from "@/lib/theme-provider";
 import { ToastProvider } from "@/lib/toast-provider";
 import { AppProvider } from "@/src/providers";
 import { ErrorBoundary } from "@/components/error-boundary";
-import { OfflineIndicator } from "@/components/offline-indicator";
-import { useOfflineStore } from "@/stores/offline-store";
+// import { OfflineIndicator } from "@/components/offline-indicator";
+// import { useOfflineStore } from "@/stores/offline-store";
 import {
   SafeAreaFrameContext,
   SafeAreaInsetsContext,
@@ -105,43 +105,43 @@ export default function RootLayout() {
   }, []);
 
   // Initialize offline store
-  useEffect(() => {
-    useOfflineStore.getState().initialize();
-  }, []);
+  // useEffect(() => {
+  //   useOfflineStore.getState().initialize();
+  // }, []);
 
   // Sync pending actions when app comes to foreground
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
-      if (nextAppState === 'active') {
-        // App came to foreground, try to sync
-        const { isOnline, pendingActions, syncPendingActions } = useOfflineStore.getState();
-        if (isOnline && pendingActions.length > 0) {
-          syncPendingActions();
-        }
-      }
-    });
+  // useEffect(() => {
+  //   const subscription = AppState.addEventListener('change', (nextAppState) => {
+  //     if (nextAppState === 'active') {
+  //       // App came to foreground, try to sync
+  //       const { isOnline, pendingActions, syncPendingActions } = useOfflineStore.getState();
+  //       if (isOnline && pendingActions.length > 0) {
+  //         syncPendingActions();
+  //       }
+  //     }
+  //   });
 
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
 
   // Initialize push notification event handlers
-  useEffect(() => {
-    let cleanup: (() => void) | void;
-    
-    const init = async () => {
-      cleanup = await notificationEvents.initialize();
-    };
-    
-    init();
-    
-    return () => {
-      if (cleanup && typeof cleanup === 'function') {
-        cleanup();
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   let cleanup: (() => void) | void;
+  //   
+  //   const init = async () => {
+  //     cleanup = await notificationEvents.initialize();
+  //   };
+  //   
+  //   init();
+  //   
+  //   return () => {
+  //     if (cleanup && typeof cleanup === 'function') {
+  //       cleanup();
+  //     }
+  //   };
+  // }, []);
 
   // Subscribe to safe area updates on web
   useEffect(() => {
@@ -168,26 +168,26 @@ export default function RootLayout() {
               {/* Launch flow screens */}
               <Stack.Screen name="(launch)" />
               {/* Auth screens */}
-              <Stack.Screen name="(auth)" />
+              {/* <Stack.Screen name="(auth)" /> */}
               {/* Customer screens */}
-              <Stack.Screen name="(customer)" />
+              {/* <Stack.Screen name="(customer)" /> */}
               {/* Tasker screens */}
-              <Stack.Screen name="(tasker)" />
+              {/* <Stack.Screen name="(tasker)" /> */}
               {/* Vendor screens */}
-              <Stack.Screen name="(vendor)" />
+              {/* <Stack.Screen name="(vendor)" /> */}
               {/* Guest screens */}
-              <Stack.Screen name="(guest)" />
+              {/* <Stack.Screen name="(guest)" /> */}
               {/* Shared screens */}
-              <Stack.Screen name="(shared)" />
+              {/* <Stack.Screen name="(shared)" /> */}
               {/* Tab navigation */}
-              <Stack.Screen name="(tabs)" />
+              {/* <Stack.Screen name="(tabs)" /> */}
               {/* OAuth callback */}
-              <Stack.Screen name="oauth/callback" />
+              {/* <Stack.Screen name="oauth/callback" /> */}
               {/* Root index */}
               <Stack.Screen name="index" />
             </Stack>
             <StatusBar style="auto" />
-            <OfflineIndicator />
+            {/* <OfflineIndicator /> */}
           </ToastProvider>
         </AppProvider>
       </QueryClientProvider>
